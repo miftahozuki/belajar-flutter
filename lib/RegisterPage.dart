@@ -139,33 +139,54 @@ regScreen() {
             // }
             ),
           ),
-          Padding( //bagian gender
+          Padding(
             padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
+            child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.attribution),
-                  hintText: '',
-                  labelText: 'Gender'),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(13.0),
+                ),
+                prefixIcon: Icon(Icons.attribution),
+                labelText: 'Gender',
+              ),
+              onChanged: (String) {
+                //aksi
+              },
+              items: <String>['Laki-laki', 'Wanita'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
           ),
-          Padding( //bagian agama
+
+          Padding(
             padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
+            child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.ballot),
-                  hintText: '',
-                  labelText: 'Religion'),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(13.0),
+                ),
+                prefixIcon: Icon(Icons.attribution),
+                labelText: 'Agama',
+              ),
+              onChanged: (String) {
+                //aksi
+              },
+              items: <String>['Islam', 'Buddha', 'Hindu', 'Kristen', 'Katholik'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
           ),
+
           Padding( //bagian alamat
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
+              // maxLines: 3,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(13.0),
@@ -173,7 +194,7 @@ regScreen() {
                   prefixIcon: Icon(Icons.home),
                   hintText: '',
                   labelText: 'Address'),
-            ),
+            )
           ),
           Padding(//bagian button
             padding: EdgeInsets.only(top: 25.0),
