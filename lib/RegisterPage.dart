@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  const RegisterPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -20,18 +11,29 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+  DateTime? selectedDate;
 
+  Future<void> _selectDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1945),
+      lastDate: DateTime(2099),
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
 
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: ListView(
         shrinkWrap: true,
         children: <Widget>[
           Form(
-            // key: _formKey,
             child: Container(
               padding: EdgeInsets.all(18.0),
               alignment: Alignment.bottomCenter,
@@ -48,34 +50,28 @@ class _RegisterPage extends State<RegisterPage> {
       ),
     );
   }
-}
 
-regScreen() {
-  return Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget regScreen() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          
           Padding(
             padding: EdgeInsets.only(top: 14.0),
-            child: Icon(
-              Icons.account_box_rounded,
-              color: Colors.blue,
-              size: 70),
+            child:
+                Icon(Icons.account_box_rounded, color: Colors.blue, size: 70),
           ),
-          
           Text(
-          'Registrasi',
+            'Registrasi',
             style: TextStyle(
               fontSize: 30,
               color: Colors.blueGrey,
               fontWeight: FontWeight.bold,
             ),
           ),
-
-
-          Padding( //bagian username
+          Padding(
+            //bagian username
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
               decoration: InputDecoration(
@@ -87,7 +83,8 @@ regScreen() {
                   labelText: 'Username'),
             ),
           ),
-          Padding( //bagian fullname
+          Padding(
+            //bagian fullname
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
               decoration: InputDecoration(
@@ -99,7 +96,8 @@ regScreen() {
                   labelText: 'Fullname'),
             ),
           ),
-          Padding( //bagian email
+          Padding(
+            //bagian email
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
               decoration: InputDecoration(
@@ -111,7 +109,8 @@ regScreen() {
                   labelText: 'Email'),
             ),
           ),
-          Padding( //bagian kata sandi
+          Padding(
+            //bagian kata sandi
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
               decoration: InputDecoration(
@@ -124,19 +123,24 @@ regScreen() {
               obscureText: true,
             ),
           ),
-          Padding( //bagian tglLahir
+          Padding(
+            // Bagian tglLahir
             padding: EdgeInsets.only(top: 23.0),
             child: TextFormField(
+              controller: TextEditingController(
+                text: selectedDate == null
+                    ? ''
+                    : DateFormat('dd/MM/yyyy').format(selectedDate!),
+              ),
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.calendar_month),
-                  hintText: '',
-                  labelText: 'Tanggal Lahir'),
-            // onTap: () {
-            //   showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2099));
-            // }
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(13.0),
+                ),
+                prefixIcon: Icon(Icons.calendar_today),
+                labelText: 'Tanggal Lahir',
+              ),
+              readOnly: true,
+              onTap: () => _selectDate(),
             ),
           ),
           Padding(
@@ -160,7 +164,6 @@ regScreen() {
               }).toList(),
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(top: 23.0),
             child: DropdownButtonFormField<String>(
@@ -174,7 +177,14 @@ regScreen() {
               onChanged: (String) {
                 //aksi
               },
-              items: <String>['Islam', 'Buddha', 'Hindu', 'Kristen', 'Katholik'].map((String value) {
+              items: <String>[
+                'Islam',
+                'Kristen',
+                'Katholik',
+                'Hindu',
+                'Budha',
+                'Konghucu'
+              ].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -182,21 +192,21 @@ regScreen() {
               }).toList(),
             ),
           ),
-
-          Padding( //bagian alamat
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              // maxLines: 3,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.home),
-                  hintText: '',
-                  labelText: 'Address'),
-            )
-          ),
-          Padding(//bagian button
+          Padding(
+              //bagian alamat
+              padding: EdgeInsets.only(top: 23.0),
+              child: TextFormField(
+                // maxLines: 3,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(13.0),
+                    ),
+                    prefixIcon: Icon(Icons.home),
+                    hintText: '',
+                    labelText: 'Address'),
+              )),
+          Padding(
+            //bagian button
             padding: EdgeInsets.only(top: 25.0),
             child: MaterialButton(
               color: Colors.blue,
@@ -204,16 +214,12 @@ regScreen() {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              onPressed: () {
-
-              },
-              child:
-                  Text('Register', style: TextStyle(color: Colors.white)),
+              onPressed: () {},
+              child: Text('Register', style: TextStyle(color: Colors.white)),
             ),
           ),
-        ]
-    )
-  );
+        ],
+      ),
+    );
+  }
 }
-
-//gender, agama, alamat, submit
