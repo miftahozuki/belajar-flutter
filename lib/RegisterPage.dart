@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key, required this.title}) : super(key: key);
@@ -11,6 +12,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+  // GlobalKey<FormState> _key = new GlobalKey();
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
   DateTime? selectedDate;
 
   Future<void> _selectDate() async {
@@ -70,154 +74,208 @@ class _RegisterPage extends State<RegisterPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Padding(
-            //bagian username
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.account_circle_outlined),
-                  hintText: '',
-                  labelText: 'Username'),
-            ),
-          ),
-          Padding(
-            //bagian fullname
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.account_circle_rounded),
-                  hintText: '',
-                  labelText: 'Fullname'),
-            ),
-          ),
-          Padding(
-            //bagian email
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.email),
-                  hintText: '',
-                  labelText: 'Email'),
-            ),
-          ),
-          Padding(
-            //bagian kata sandi
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(13.0),
-                  ),
-                  prefixIcon: Icon(Icons.password),
-                  hintText: 'Password',
-                  labelText: 'Password'),
-              obscureText: true,
-            ),
-          ),
-          Padding(
-            // Bagian tglLahir
-            padding: EdgeInsets.only(top: 23.0),
-            child: TextFormField(
-              controller: TextEditingController(
-                text: selectedDate == null
-                    ? ''
-                    : DateFormat('dd/MM/yyyy').format(selectedDate!),
-              ),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(13.0),
-                ),
-                prefixIcon: Icon(Icons.calendar_today),
-                labelText: 'Tanggal Lahir',
-              ),
-              readOnly: true,
-              onTap: () => _selectDate(),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 23.0),
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(13.0),
-                ),
-                prefixIcon: Icon(Icons.attribution),
-                labelText: 'Gender',
-              ),
-              onChanged: (String) {
-                //aksi
-              },
-              items: <String>['Laki-laki', 'Wanita'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 23.0),
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(13.0),
-                ),
-                prefixIcon: Icon(Icons.attribution),
-                labelText: 'Agama',
-              ),
-              onChanged: (String) {
-                //aksi
-              },
-              items: <String>[
-                'Islam',
-                'Kristen',
-                'Katholik',
-                'Hindu',
-                'Budha',
-                'Konghucu'
-              ].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-          Padding(
-              //bagian alamat
-              padding: EdgeInsets.only(top: 23.0),
-              child: TextFormField(
-                // maxLines: 3,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(13.0),
+          Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.disabled,
+            child: Column(
+              children: [
+                Padding(
+                  //bagian username
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.account_circle_outlined),
+                      hintText: '',
+                      labelText: 'Username',
                     ),
-                    prefixIcon: Icon(Icons.home),
-                    hintText: '',
-                    labelText: 'Address'),
-              )),
-          Padding(
-            //bagian button
-            padding: EdgeInsets.only(top: 25.0),
-            child: MaterialButton(
-              color: Colors.blue,
-              height: 50,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              onPressed: () {},
-              child: Text('Register', style: TextStyle(color: Colors.white)),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: "Username tidak boleh kosong!"),
+                      MinLengthValidator(5,
+                          errorText: "username harus lebih dari 5 karakter")
+                    ]),
+                  ),
+                ),
+                Padding(
+                  //bagian fullname
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.account_circle_rounded),
+                      hintText: '',
+                      labelText: 'Fullname',
+                    ),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "Nama tidak boleh kosong!"),
+                    ]),
+                  ),
+                ),
+                Padding(
+                  //bagian email
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.email),
+                      hintText: '',
+                      labelText: 'Email',
+                    ),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "Email tidak boleh kosong!"),
+                      EmailValidator(errorText: "Email tidak valid")
+                    ]),
+                    controller: _emailController,
+                  ),
+                ),
+                Padding(
+                  //bagian kata sandi
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.password),
+                      hintText: 'Password',
+                      labelText: 'Password',
+                    ),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: "Password tidak boleh kosong!"),
+                      MinLengthValidator(8,
+                          errorText: "Password harus lebih dari 8 karakter"),
+                    ]),
+                    obscureText: true,
+                  ),
+                ),
+                Padding(
+                  // Bagian tglLahir
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    controller: TextEditingController(
+                      text: selectedDate == null
+                          ? ''
+                          : DateFormat('dd/MM/yyyy').format(selectedDate!),
+                    ),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.calendar_today),
+                      labelText: 'Tanggal Lahir',
+                    ),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "Pilih tanggal lahir anda!"),
+                    ]),
+                    readOnly: true,
+                    onTap: () => _selectDate(),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.attribution),
+                      labelText: 'Gender',
+                    ),
+                    onChanged: (String? value) {
+                      // Lakukan sesuatu dengan nilai yang dipilih
+                    },
+                    items: <String>['Laki-laki', 'Wanita'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    validator: MultiValidator([
+                      //validasi
+                    ]),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.attribution),
+                      labelText: 'Agama',
+                    ),
+                    onChanged: (String? value) {
+                      // Lakukan sesuatu dengan nilai yang dipilih
+                    },
+                    items: <String>[
+                      'Islam',
+                      'Kristen',
+                      'Katholik',
+                      'Hindu',
+                      'Budha',
+                      'Konghucu'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    validator: MultiValidator([
+                      //validasi
+                    ]),
+                  ),
+                ),
+                Padding(
+                  //bagian alamat
+                  padding: EdgeInsets.only(top: 23.0),
+                  child: TextFormField(
+                    // maxLines: 3,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(13.0),
+                      ),
+                      prefixIcon: Icon(Icons.home),
+                      hintText: '',
+                      labelText: 'Address',
+                    ),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: "Alamat tidak boleh kosong!"),
+                      MinLengthValidator(8, errorText: "Alamat tidak lengkap!")
+                    ]),
+                  ),
+                ),
+                Padding(
+                  //bagian button
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: MaterialButton(
+                    color: Colors.blue,
+                    height: 50,
+                    minWidth: double.infinity,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Jika validasi berhasil, lakukan tindakan yang diinginkan
+                      }
+                    },
+                    child:
+                        Text('Register', style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
