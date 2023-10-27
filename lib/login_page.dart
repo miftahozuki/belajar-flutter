@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:latihan1/dashboard_page.dart';
 import 'auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,12 +19,35 @@ class _LoginPage extends State<LoginPage> {
   // final _emailController = TextEditingController();
   final AuthController authController = Get.find();
   bool _isPasswordVisible = false;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
+  // void login() {
+  //   // Simulate registration logic
+  //   // authController.login();
+  //   Get.offAllNamed('/dashboard');
+  // }
 
   void login() {
-    // Simulate registration logic
-    authController.login();
-    Get.offAllNamed('/dashboard');
+  String enteredUsername = usernameController.text;
+  String enteredPassword = passwordController.text;
+
+  // Sekarang, Anda bisa memeriksa dan memproses nilai-nilai tersebut.
+  // Contoh:
+  if (enteredUsername == "admin" && enteredPassword == "admin") {
+    Get.to(const DashboardPage(title: 'Dashboard'));
+    // Get.offAllNamed('/dashboard');
+        // ...
+  } else {
+    Get.snackbar(
+        "Login Error",
+        "Username atau password salah.",
+        snackPosition: SnackPosition.BOTTOM,
+    );
+    // ...
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +102,7 @@ class _LoginPage extends State<LoginPage> {
                   //bagian username
                   padding: EdgeInsets.only(top: 23.0),
                   child: TextFormField(
+                    controller: usernameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(13.0),
@@ -98,6 +123,7 @@ class _LoginPage extends State<LoginPage> {
                   //bagian kata sandi
                   padding: EdgeInsets.only(top: 23.0),
                   child: TextFormField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(13.0),
@@ -122,7 +148,7 @@ class _LoginPage extends State<LoginPage> {
                     validator: MultiValidator([
                       RequiredValidator(
                           errorText: "Password tidak boleh kosong!"),
-                      MinLengthValidator(8,
+                      MinLengthValidator(3,
                           errorText: "Password harus lebih dari 8 karakter"),
                     ]),
                     obscureText: !_isPasswordVisible,

@@ -92,8 +92,30 @@ class _DashboardPage extends State<DashboardPage> {
                 Padding(
                   //bagian username
                   padding: EdgeInsets.only(top: 23.0),
-                  child: Text('My Dashboard Page'),
+                  // child: Text('My Dashboard Page'),
+                  child: Text('Hello'),
                 ),
+                Padding(padding: EdgeInsets.only(top: 23.0),
+                child: Text('admin'),
+                ),
+                Padding(
+                  //bagian username
+                  padding: EdgeInsets.only(top: 23.0),
+                  // child: Text('My Dashboard Page'),
+                  child: Text('admin@gmail.com'),
+                ),
+                Padding(padding: EdgeInsets.only(top: 23.0),
+                child: Text('Laki-laki'),
+                ),
+                Padding(
+                  //bagian username
+                  padding: EdgeInsets.only(top: 23.0),
+                  // child: Text('My Dashboard Page'),
+                  child: Text('01 Januari 2008'),
+                ),
+                Padding(padding: EdgeInsets.only(top: 23.0),
+                child: Text('Jl. Mastrip, Kec. Sumbersari, Jember.'),
+                )
               ],
             ),
           )
