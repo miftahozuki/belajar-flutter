@@ -17,7 +17,8 @@ class _RegisterPage extends State<RegisterPage> {
   // GlobalKey<FormState> _key = new GlobalKey();
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final AuthController authController = Get.find(); 
+  final AuthController authController = Get.find();
+  bool _isPasswordVisible = false; 
 
   void register() {
     // Simulate registration logic
@@ -156,6 +157,19 @@ class _RegisterPage extends State<RegisterPage> {
                       prefixIcon: Icon(Icons.password),
                       hintText: 'Password',
                       labelText: 'Password',
+                      suffixIcon: GestureDetector(
+                        // Tambahkan GestureDetector untuk mengubah status tampilan password
+                        onTap: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                        child: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility, // Ikon mata
+                        ),
+                      ),
                     ),
                     validator: MultiValidator([
                       RequiredValidator(
@@ -163,7 +177,7 @@ class _RegisterPage extends State<RegisterPage> {
                       MinLengthValidator(8,
                           errorText: "Password harus lebih dari 8 karakter"),
                     ]),
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                   ),
                 ),
                 Padding(
