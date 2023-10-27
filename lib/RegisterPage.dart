@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:get/get.dart';
+import 'auth_controller.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key, required this.title}) : super(key: key);
@@ -15,13 +17,21 @@ class _RegisterPage extends State<RegisterPage> {
   // GlobalKey<FormState> _key = new GlobalKey();
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final AuthController authController = Get.find(); 
+
+  void register() {
+    // Simulate registration logic
+    authController.register();
+    Get.offAllNamed('/dashboard');
+  }
+
   DateTime? selectedDate;
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1945),
+      firstDate: DateTime(1950),
       lastDate: DateTime(2099),
     );
     if (picked != null && picked != selectedDate)
@@ -267,10 +277,33 @@ class _RegisterPage extends State<RegisterPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Jika validasi berhasil, lakukan tindakan yang diinginkan
+                        register();
                       }
                     },
                     child:
                         Text('Register', style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+                Padding(
+                  //bagian button
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already have an account?'),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.offAllNamed('/login');
+                        },
+                        child: Text(
+                          'Back to Login',
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

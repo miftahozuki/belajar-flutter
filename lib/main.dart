@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'auth_controller.dart';
+
+import 'dashboard_page.dart';
+import 'package:latihan1/login_page.dart';
 import 'RegisterPage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
+  Get.put(AuthController());
   runApp(const MyApp());
 }
 
@@ -11,7 +21,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Aplikasiku',
       theme: ThemeData(
         // This is the theme of your application.
@@ -32,10 +42,26 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const RegisterPage(title: 'Halaman Register'),
+      // home: const LoginPage(title: 'Halaman Register'),
+      initialRoute: '/login',
+      getPages: [
+        GetPage(
+            name: '/login',
+            page: () => LoginPage(
+                  title: 'login',
+                )),
+        GetPage(
+            name: '/register',
+            page: () => RegisterPage(
+                  title: 'register',
+                )),
+        GetPage(
+            name: '/dashboard',
+            page: () => DashboardPage(
+                  title: 'dashboard',
+                )),
+      ],
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-
