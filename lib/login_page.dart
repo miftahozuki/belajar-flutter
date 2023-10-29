@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:latihan1/dashboard_page.dart';
+import 'package:http/http.dart' as http;
 import 'auth_controller.dart';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -22,32 +24,21 @@ class _LoginPage extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  Future<void> login() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
 
-  // void login() {
-  //   // Simulate registration logic
-  //   // authController.login();
-  //   Get.offAllNamed('/dashboard');
-  // }
-
-  void login() {
-  String enteredUsername = usernameController.text;
-  String enteredPassword = passwordController.text;
-
-  // Sekarang, Anda bisa memeriksa dan memproses nilai-nilai tersebut.
-  // Contoh:
-  if (enteredUsername == "admin" && enteredPassword == "admin") {
-    Get.to(const DashboardPage(title: 'Dashboard'));
-    // Get.offAllNamed('/dashboard');
-        // ...
-  } else {
-    Get.snackbar(
-        "Login Error",
-        "Username atau password salah.",
-        snackPosition: SnackPosition.BOTTOM,
-    );
-    // ...
+    bool isAuthenticated = await authController.login(username, password);
+      if (isAuthenticated) {
+        Get.to(const DashboardPage(title: 'Dashboard'));
+      } else {
+        // Autentikasi gagal
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text('Autentikasi gagal. Periksa kembali username dan password.'),
+        ));
+      }
   }
-}
 
   @override
   Widget build(BuildContext context) {

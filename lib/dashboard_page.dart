@@ -96,25 +96,25 @@ class _DashboardPage extends State<DashboardPage> {
                   child: Text('Hello'),
                 ),
                 Padding(padding: EdgeInsets.only(top: 23.0),
-                child: Text('admin'),
+                child: Text(authController.authenticatedUser!['fullname']),
                 ),
                 Padding(
                   //bagian username
                   padding: EdgeInsets.only(top: 23.0),
                   // child: Text('My Dashboard Page'),
-                  child: Text('admin@gmail.com'),
+                  child: Text(authController.authenticatedUser!['email']),
                 ),
                 Padding(padding: EdgeInsets.only(top: 23.0),
-                child: Text('Laki-laki'),
+                child: Text(authController.authenticatedUser!['gender'] == 1 ? 'Laki-laki' : 'Wanita'),
                 ),
                 Padding(
                   //bagian username
                   padding: EdgeInsets.only(top: 23.0),
                   // child: Text('My Dashboard Page'),
-                  child: Text('01 Januari 2008'),
+                  child: Text(authController.authenticatedUser!['birth'])
                 ),
                 Padding(padding: EdgeInsets.only(top: 23.0),
-                child: Text('Jl. Mastrip, Kec. Sumbersari, Jember.'),
+                child: Text(authController.authenticatedUser!['address']),
                 )
               ],
             ),
